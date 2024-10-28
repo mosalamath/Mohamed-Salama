@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="T.A.: Mohamed Salama" />
+  <title>Numerical Analysis Course Chapter 1: Errors</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title"><strong>Numerical Analysis Course<br />
+<span><em>Chapter 1: Errors</em></span></strong></h1>
+<p class="author"><em>T.A.: Mohamed Salama</em></p>
+<p class="date"><em> </em></p>
+</header>
+<h1 id="introduction-to-numerical-analysis">Introduction to Numerical
+Analysis</h1>
+<p>Numerical analysis is the study of algorithms that provide numerical
+approximations for problems in mathematical analysis. It is used across
+various fields such as engineering, physical sciences, life sciences,
+and social sciences. The focus is on methods that give approximate
+solutions to mathematical problems, which is essential in cases where
+exact solutions are difficult or impossible to calculate.</p>
+<p>Examples include:</p>
+<ul>
+<li><p>Solving ordinary differential equations in celestial
+mechanics.</p></li>
+<li><p>Applying numerical linear algebra in data analysis.</p></li>
+<li><p>Simulating biological systems using stochastic differential
+equations and Markov chains.</p></li>
+</ul>
+<h1 id="sources-of-errors-in-numerical-computations">Sources of Errors
+in Numerical Computations</h1>
+<p>Errors are inevitable in numerical methods, and understanding their
+sources and growth is crucial for effective computation.</p>
+<ul>
+<li><p><strong>Absolute Error</strong>: Defined as <span
+class="math inline">\(\epsilon = |x_0 - x|\)</span>, where <span
+class="math inline">\(x_0\)</span> is the exact value, and <span
+class="math inline">\(x\)</span> is the approximation.</p></li>
+<li><p><strong>Relative Error</strong>: Given by <span
+class="math inline">\(\epsilon_r = \frac{|x_0 -
+x|}{|x_0|}\)</span>.</p></li>
+</ul>
+<p>Common sources of error include:</p>
+<ol>
+<li><p><strong>Initial Errors</strong>: Errors introduced by inaccurate
+initial data, often from measurement limitations.</p></li>
+<li><p><strong>Truncation Errors</strong>: Arise when an infinite
+process is replaced by a finite one (e.g., numerical
+integration).</p></li>
+<li><p><strong>Round-off Errors</strong>: Result from approximating real
+numbers with a finite number of digits during computations.</p></li>
+</ol>
+<h1 id="error-types-and-propagation">Error Types and Propagation</h1>
+<p>Errors in numerical computations can grow or shrink as they propagate
+through iterative steps. The sources of these errors are often static
+(initial errors) but can grow dynamically (truncation and round-off
+errors). It is essential to analyze the accumulation and amplification
+of errors through iterative processes.</p>
+<ul>
+<li><p><strong>Ill-Conditioned Problems</strong>: When small changes in
+input lead to large variations in output.</p></li>
+<li><p><strong>Truncation Errors</strong>: Depend on step size <span
+class="math inline">\(h\)</span>, and can be minimized by reducing <span
+class="math inline">\(h\)</span> or increasing the number of
+intervals.</p></li>
+<li><p><strong>Round-off Errors</strong>: Typically accumulate randomly
+and can cancel each other out. However, they may snowball under certain
+conditions.</p></li>
+</ul>
+<h1 id="concepts-of-significant-digits-and-rounding">Concepts of
+Significant Digits and Rounding</h1>
+<p>Understanding significant digits is crucial in numerical computation.
+The significant digits of a number are those that carry meaningful
+information regarding its precision.</p>
+<ul>
+<li><p>A number is rounded to a specific decimal place by examining the
+digit immediately after the desired position.</p></li>
+<li><p>Significant digits start with the first non-zero digit and
+generally end with the last meaningful digit.</p></li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><p><span class="math inline">\(8632574\)</span> rounded to 4
+significant figures is <span
+class="math inline">\(8633000\)</span>.</p></li>
+<li><p><span class="math inline">\(3.1415926\)</span> rounded to 5
+decimals is <span class="math inline">\(3.14159\)</span>.</p></li>
+</ul>
+<h1 id="rounding-operations-in-arithmetic">Rounding Operations in
+Arithmetic</h1>
+<p>Round-off errors in arithmetic operations (addition, subtraction,
+multiplication, division) can distort results. In high-speed computing,
+the following principles apply:</p>
+<ul>
+<li><p><strong>Addition and Subtraction</strong>: Typically, no
+round-off errors unless the results exceed the system’s range.</p></li>
+<li><p><strong>Multiplication and Division</strong>: Errors occur since
+products of <span class="math inline">\(n\)</span>-digit numbers
+generally contain <span class="math inline">\(2n\)</span> digits,
+requiring rounding.</p></li>
+</ul>
+<p>Pseudo-operations can account for these errors, modifying the laws of
+arithmetic slightly:</p>
+<ul>
+<li><p>The <strong>commutative law for multiplication</strong> is
+preserved.</p></li>
+<li><p>The <strong>distributive law</strong> and <strong>associative
+law</strong> are modified but still hold under specific
+circumstances.</p></li>
+</ul>
+<h1 id="examples-and-practical-insights">Examples and Practical
+Insights</h1>
+<p>Numerical methods often overestimate the maximum possible errors. For
+instance, adding together <span class="math inline">\(20,000\)</span>
+numbers rounded to four decimal places may lead to errors, but in <span
+class="math inline">\(99\%\)</span> of cases, the total error will not
+exceed <span class="math inline">\(0.005\)</span>.</p>
+<p>In practical computations, it is important to classify and manage
+errors:</p>
+<ul>
+<li><p><strong>Initial Errors</strong>: These can fatally affect
+results, especially in ill-conditioned problems.</p></li>
+<li><p><strong>Truncation and Round-off Errors</strong>: These errors
+can often be managed through step size adjustments and algorithm
+selection.</p></li>
+</ul>
+</body>
+</html>
